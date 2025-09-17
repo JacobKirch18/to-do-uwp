@@ -43,6 +43,16 @@ namespace to_do_uwp.ViewModels
             }
         }
 
+        public void AddItem(ToDoItemViewModel item)
+        {
+            this.Items.Add(new ViewModels.ToDoItemViewModel
+            {
+                Name = item.Name,
+                DueDate = item.DueDate,
+            });
+            Items.Add(item);
+        }
+
         private void NotifyPropertyChanged([CallerMemberName] string property = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));

@@ -97,7 +97,7 @@ namespace to_do_uwp
 
         private async void AddTaskButton_Click(object sender, RoutedEventArgs e)
         {
-            ContentDialog addTaskDialog = new ContentDialog
+            ContentDialog addItemDialog = new ContentDialog
             {
                 Title = "Add New Task",
                 PrimaryButtonText = "Add",
@@ -106,11 +106,11 @@ namespace to_do_uwp
 
             StackPanel panel = new StackPanel();
 
-            TextBox taskNameTextBox = new TextBox
+            TextBox itemNameTextBox = new TextBox
             {
                 PlaceholderText = "Task Name"
             };
-            panel.Children.Add(taskNameTextBox);
+            panel.Children.Add(itemNameTextBox);
 
             TextBox dueDateTextBox = new TextBox
             {
@@ -118,24 +118,24 @@ namespace to_do_uwp
             };
             panel.Children.Add(dueDateTextBox);
 
-            addTaskDialog.Content = panel;
+            addItemDialog.Content = panel;
 
-            ContentDialogResult result = await addTaskDialog.ShowAsync();
+            ContentDialogResult result = await addItemDialog.ShowAsync();
 
             if (result == ContentDialogResult.Primary)
             {
-                string taskName = taskNameTextBox.Text.Trim();
+                string itemName = itemNameTextBox.Text.Trim();
                 string dueDate = dueDateTextBox.Text.Trim();
 
-                if (!string.IsNullOrEmpty(taskName) && !string.IsNullOrEmpty(dueDate))
+                if (!string.IsNullOrEmpty(itemName) && !string.IsNullOrEmpty(dueDate))
                 {
-                    ViewModels.ToDoItemViewModel newTask = new ViewModels.ToDoItemViewModel
+                    ViewModels.ToDoItemViewModel newItem = new ViewModels.ToDoItemViewModel
                     {
-                        Name = taskName,
+                        Name = itemName,
                         DueDate = dueDate
                     };
 
-                    ItemsList.Items.Add(newTask);
+                    ItemsList.AddItem(newItem);
                 }
                 else
                 {

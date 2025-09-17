@@ -11,6 +11,9 @@ namespace to_do_uwp.Models
         public string Name {  get; set; }
         public List<ToDoItem> Items { get; set; }
 
-        public ToDoItemsList() { }
+        public ToDoItemsList() {
+            Name = "To-Do List";
+            Items = new List<ToDoItem>();
+        }
     }
 }
