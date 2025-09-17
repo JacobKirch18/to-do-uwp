@@ -7,6 +7,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -52,7 +53,11 @@ namespace to_do_uwp
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
-                    //TODO: Load state from previously suspended application
+                    var navigationState = ApplicationData.Current.LocalSettings.Values["NavigationState"] as string;
+                    if (navigationState != null)
+                    {
+                        rootFrame.SetNavigationState(navigationState);
+                    }
                 }
 
                 // Place the frame in the current Window
@@ -93,7 +98,14 @@ namespace to_do_uwp
         private void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
-            //TODO: Save application state and stop any background activity
+
+            Frame frame = Window.Current.Content as Frame;
+            try
+            {
+                ApplicationData.Current.LocalSettings.Values["NavigationState"] = frame.GetNavigationState();
+            }
+            catch (Exception ex) { deferral.Complete(); return; }
+
             deferral.Complete();
         }
     }
