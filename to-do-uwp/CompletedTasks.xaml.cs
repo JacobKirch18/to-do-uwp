@@ -13,23 +13,23 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace to_do_uwp
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class CompletedTasks : Page
     {
-        public MainPage()
+        public CompletedTasks()
         {
             this.InitializeComponent();
         }
 
-        private void CompletedTasksButton_Click(object sender, RoutedEventArgs e)
+        private void HomeButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(CompletedTasks));
+            this.Frame.Navigate(typeof(MainPage));
         }
 
         private void SettingsButton_Click(object sender, RoutedEventArgs e)
