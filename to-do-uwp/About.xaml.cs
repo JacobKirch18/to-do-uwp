@@ -16,7 +16,7 @@ using Windows.UI.Xaml.Navigation;
 namespace to_do_uwp
 {
     /// <summary>
-    /// An About Page
+    /// An About Page that displays basic information about the To-Do UWP application
     /// </summary>
     public sealed partial class About : Page
     {
