@@ -14,5 +14,7 @@
             <AppBarButton Icon="Setting" Label="Settings" Click="SettingsButton_Click" Width="85" />
             <AppBarButton Icon="Help" Label="About" Click="AboutButton_Click" Width="85" />
         </CommandBar>
+        <TextBlock Text="To-Do List" FontSize="40" FontWeight="Bold" Margin="20" HorizontalAlignment="Center"/>
+        <Button Content="Add Task" HorizontalAlignment="Center" Margin="20" Width="175" FontSize="18" Click="AddTaskButton_Click"/>
     </StackPanel>
 </Page>
