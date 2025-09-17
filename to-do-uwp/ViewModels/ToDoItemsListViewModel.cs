@@ -45,7 +45,7 @@ namespace to_do_uwp.ViewModels
 
         public void AddItem(ToDoItemViewModel item)
         {
-            this.Items.Add(new ViewModels.ToDoItemViewModel
+            toDoItemsList.Items.Add(new Models.ToDoItem
             {
                 Name = item.Name,
                 DueDate = item.DueDate,
