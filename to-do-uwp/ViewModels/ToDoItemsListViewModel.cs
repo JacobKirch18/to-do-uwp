@@ -53,6 +53,15 @@ namespace to_do_uwp.ViewModels
             Items.Add(item);
         }
 
+        public void DeleteItem(ToDoItemViewModel item)
+        {
+            if (item != null && Items.Contains(item))
+            {
+                toDoItemsList.Items.RemoveAll(i => i.Name == item.Name && i.DueDate == item.DueDate);
+                Items.Remove(item);
+            }
+        }
+
         private void NotifyPropertyChanged([CallerMemberName] string property = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
