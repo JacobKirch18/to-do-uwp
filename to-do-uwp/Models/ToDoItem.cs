@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace to_do_uwp.Models
 {
-    internal class task
+    public class ToDoItem
     {
-        public String Name { get; set; }
-        public String DueDate { get; set; }
+        public string Name { get; set; }
+        public string DueDate { get; set; }
     }
 }

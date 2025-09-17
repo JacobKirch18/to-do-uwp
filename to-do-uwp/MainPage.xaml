@@ -5,6 +5,8 @@
     xmlns:local="using:to_do_uwp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:models="using:to_do_uwp.Models"
+    xmlns:vm="using:to_do_uwp.ViewModels"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -16,5 +18,35 @@
         </CommandBar>
         <TextBlock Text="To-Do List" FontSize="40" FontWeight="Bold" Margin="20" HorizontalAlignment="Center"/>
         <Button Content="Add Task" HorizontalAlignment="Center" Margin="20" Width="175" FontSize="18" Click="AddTaskButton_Click"/>
+        <ListView x:Name="ItemListView" Height="750" ItemsSource="{x:Bind ItemsList.Items, Mode=OneWay}" Margin="20" HorizontalAlignment="Stretch">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListViewItem">
+                                <ContentPresenter />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Background" Value="Transparent"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="vm:ToDoItemViewModel">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="{x:Bind Name, Mode=OneWay}" Grid.Column="0" />
+                        <TextBlock Text="{x:Bind DueDate, Mode=OneWay}" Grid.Column="1" />
+                        <Button x:Name="CompleteButton" Content="Mark as Complete" Grid.Column="2" Click="CompleteButton_Click" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </StackPanel>
 </Page>
