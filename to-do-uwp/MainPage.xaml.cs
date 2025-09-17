@@ -157,7 +157,7 @@ namespace to_do_uwp
         private void CompleteButton_Click(Object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
-            var item = button.Tag as ToDoItemViewModel;
+            var item = button.DataContext as ToDoItemViewModel;
             ItemsList.DeleteItem(item);
         }
     }
