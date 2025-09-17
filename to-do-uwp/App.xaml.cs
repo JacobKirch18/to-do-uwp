@@ -8,6 +8,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Storage;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -49,6 +50,10 @@ namespace to_do_uwp
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 
+                rootFrame.Navigated += OnNavigated;
+
+                SystemNavigationManager.GetForCurrentView().BackRequested += OnBackRequested;
+
                 rootFrame.NavigationFailed += OnNavigationFailed;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
@@ -75,6 +80,30 @@ namespace to_do_uwp
                 }
                 // Ensure the current window is active
                 Window.Current.Activate();
+            }
+        }
+
+        /// <summary>
+        /// Invoked on Navigation
+        /// </summary>
+        private void OnNavigated(object sender, NavigationEventArgs e)
+        {
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility =
+                ((Frame)sender).CanGoBack ?
+                AppViewBackButtonVisibility.Visible :
+                AppViewBackButtonVisibility.Collapsed;
+        }
+
+        /// <summary>
+        /// Invoked when Back Navigation is Requested
+        /// </summary>
+        private void OnBackRequested(object sender, BackRequestedEventArgs e)
+        {
+            Frame frame = Window.Current.Content as Frame;
+            if (frame.CanGoBack)
+            {
+                e.Handled = true;
+                frame.GoBack();
             }
         }
 
