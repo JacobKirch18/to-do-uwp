@@ -34,7 +34,8 @@ namespace to_do_uwp
             this.InitializeComponent();
 
             Item = new ToDoItemViewModel();
-            ItemsList = new ToDoItemsListViewModel(); 
+            ItemsList = new ToDoItemsListViewModel();
+            ItemsList.Items.Add(new ToDoItemViewModel { Name = "Sample Task", DueDate = "Tomorrow" });
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -46,17 +47,20 @@ namespace to_do_uwp
             {
                 StorageFile file = await current.GetFileAsync("items.json");
                 string json = await FileIO.ReadTextAsync(file);
-                ItemsList.Items = JsonConvert.DeserializeObject<ObservableCollection<ViewModels.ToDoItemViewModel>>(json);
-                if (ItemsList.Items == null)
+                var loadedItems = JsonConvert.DeserializeObject<ObservableCollection<ViewModels.ToDoItemViewModel>>(json);
+
+                ItemsList.Items.Clear();
+                if (loadedItems != null)
                 {
-                    ItemsList.Items = new ObservableCollection<ViewModels.ToDoItemViewModel>();
+                    foreach (var item in loadedItems)
+                    {
+                        ItemsList.AddItem(item);
+                    }
                 }
-                //TasksListView.ItemsSource = tasks;
             }
             catch (FileNotFoundException)
             {
-                ItemsList.Items = new ObservableCollection<ViewModels.ToDoItemViewModel>();
-                //TasksListView.ItemsSource = tasks;
+                ItemsList.Items.Clear();
             }
         }
 

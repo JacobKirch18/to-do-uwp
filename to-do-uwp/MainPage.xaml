@@ -34,16 +34,19 @@
             </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate x:DataType="vm:ToDoItemViewModel">
-                    <Grid>
+                    <Grid Width="600" HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
-
-                        <TextBlock Text="{x:Bind Name, Mode=OneWay}" Grid.Column="0" />
-                        <TextBlock Text="{x:Bind DueDate, Mode=OneWay}" Grid.Column="1" />
-                        <Button x:Name="CompleteButton" Content="Mark as Complete" Grid.Column="2" Click="CompleteButton_Click" />
+                        <Border BorderBrush="Gray" BorderThickness="1" Grid.Column="0">
+                            <TextBlock Text="{x:Bind Name, Mode=OneWay}"  HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <Border BorderBrush="Gray" BorderThickness="1" Grid.Column="1">
+                            <TextBlock Text="{x:Bind DueDate, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" />                            
+                        </Border>
+                        <Button x:Name="CompleteButton" Content="Mark as Complete" Grid.Column="2" Click="CompleteButton_Click" HorizontalAlignment="Center" />                            
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
