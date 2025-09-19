@@ -32,6 +32,22 @@ namespace to_do_uwp
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            object savedTheme = ApplicationData.Current.LocalSettings.Values["AppTheme"];
+            string themeTag = savedTheme as string ?? "Default";
+
+            switch (themeTag)
+            {
+                case "Light":
+                    RequestedTheme = ApplicationTheme.Light;
+                    break;
+                case "Dark":
+                    RequestedTheme = ApplicationTheme.Dark;
+                    break;
+                default:
+                    // do nothing, UWP will use system theme automatically
+                    break;
+            }
         }
 
         /// <summary>

@@ -5,6 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -20,9 +22,47 @@ namespace to_do_uwp
     /// </summary>
     public sealed partial class Settings : Page
     {
+        private const string ThemeSettingKey = "AppTheme";
+        private bool isThemeComboBoxSelectionIntialized = false;
+
         public Settings()
         {
             this.InitializeComponent();
+            LoadThemeSelection();
+            isThemeComboBoxSelectionIntialized = true;
+        }
+
+        private void LoadThemeSelection()
+        {
+            string themeTag = ApplicationData.Current.LocalSettings.Values[ThemeSettingKey] as string ?? "Default";
+
+            foreach (ComboBoxItem item in ThemeComboBox.Items)
+            {
+                if (((string)item.Tag) == themeTag)
+                {
+                    ThemeComboBox.SelectedItem = item;
+                    break;
+                }
+            }
+        }
+
+        private async void ThemeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!isThemeComboBoxSelectionIntialized) return;
+
+            var selectedItem = (ComboBoxItem)ThemeComboBox.SelectedItem;
+            string themeTag = selectedItem.Tag.ToString();
+
+            ApplicationData.Current.LocalSettings.Values[ThemeSettingKey] = themeTag;
+
+            var dialog = new MessageDialog("The app must restart to apply the new theme. Restart now? (No data will be lost)") { Title = "Restart Dialog" };
+            dialog.Commands.Add(new UICommand("Yes", async command =>
+            {
+                await Windows.ApplicationModel.Core.CoreApplication.RequestRestartAsync(string.Empty);
+            }));
+            dialog.Commands.Add(new UICommand("No"));
+
+            await dialog.ShowAsync();
         }
 
         private void HomeButton_Click(object sender, RoutedEventArgs e)
