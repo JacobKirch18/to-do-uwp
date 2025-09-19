@@ -55,14 +55,21 @@ namespace to_do_uwp
 
             ApplicationData.Current.LocalSettings.Values[ThemeSettingKey] = themeTag;
 
-            var dialog = new MessageDialog("The app must restart to apply the new theme. Restart now? (No data will be lost)") { Title = "Restart Dialog" };
-            dialog.Commands.Add(new UICommand("Yes", async command =>
+            var dialog = new ContentDialog
+            {
+                Title = "Restart Dialog",
+                Content = "The app must restart to apply the new theme. Restart now? (No data will be lost)",
+                PrimaryButtonText = "Yes",
+                CloseButtonText = "No",
+                RequestedTheme = this.RequestedTheme
+            };
+
+            var result = await dialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
             {
                 await Windows.ApplicationModel.Core.CoreApplication.RequestRestartAsync(string.Empty);
-            }));
-            dialog.Commands.Add(new UICommand("No"));
-
-            await dialog.ShowAsync();
+            }
         }
 
         private void HomeButton_Click(object sender, RoutedEventArgs e)
