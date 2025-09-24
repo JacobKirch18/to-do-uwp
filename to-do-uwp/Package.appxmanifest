@@ -32,13 +32,15 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="to_do_uwp.App">
       <uap:VisualElements
-        DisplayName="to_do_uwp"
+        DisplayName="Loaf"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
-        Description="to_do_uwp"
+        Description="A To-Do application with a poorly drawn picture of a loafed cat as the logo."
         BackgroundColor="transparent">
         <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png"/>
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
+        <uap:InitialRotationPreference>
+          <uap:Rotation Preference="landscape"/></uap:InitialRotationPreference>
       </uap:VisualElements>
     </Application>
   </Applications>
