@@ -28,6 +28,7 @@ namespace to_do_uwp
     {
         public ToDoItemViewModel Item { get; set; }
         public ToDoItemsListViewModel ItemsList { get; set; }
+        public ToDoItemsListViewModel CompletedItemsList { get; set; }
 
         public MainPage()
         {
@@ -35,7 +36,7 @@ namespace to_do_uwp
 
             Item = new ToDoItemViewModel();
             ItemsList = new ToDoItemsListViewModel();
-            ItemsList.Items.Add(new ToDoItemViewModel { Name = "Sample Task", DueDate = "Tomorrow" });
+            CompletedItemsList = new ToDoItemsListViewModel();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -45,8 +46,8 @@ namespace to_do_uwp
             StorageFolder current = ApplicationData.Current.LocalFolder;
             try
             {
-                StorageFile file = await current.GetFileAsync("items.json");
-                string json = await FileIO.ReadTextAsync(file);
+                StorageFile toDoFile = await current.GetFileAsync("items.json");
+                string json = await FileIO.ReadTextAsync(toDoFile);
                 var loadedItems = JsonConvert.DeserializeObject<ObservableCollection<ViewModels.ToDoItemViewModel>>(json);
 
                 ItemsList.Items.Clear();
@@ -62,14 +63,38 @@ namespace to_do_uwp
             {
                 ItemsList.Items.Clear();
             }
+
+            try
+            {
+                StorageFile completedFile = await current.GetFileAsync("completed_items.json");
+                string json = await FileIO.ReadTextAsync(completedFile);
+                var loadedCompletedItems = JsonConvert.DeserializeObject<ObservableCollection<ViewModels.ToDoItemViewModel>>(json);
+
+                CompletedItemsList.Items.Clear();
+                if (loadedCompletedItems != null)
+                {
+                    foreach (var item in loadedCompletedItems)
+                    {
+                        CompletedItemsList.AddItem(item);
+                    }
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                CompletedItemsList.Items.Clear();
+            }
         }
 
         protected override async void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
             StorageFolder current = ApplicationData.Current.LocalFolder;
-            StorageFile file = await current.CreateFileAsync("items.json", CreationCollisionOption.ReplaceExisting);
-            await SaveToFile(file, JsonConvert.SerializeObject(ItemsList.Items));
+
+            StorageFile toDoFile = await current.CreateFileAsync("items.json", CreationCollisionOption.ReplaceExisting);
+            await SaveToFile(toDoFile, JsonConvert.SerializeObject(ItemsList.Items));
+
+            StorageFile completedFile = await current.CreateFileAsync("completed_items.json", CreationCollisionOption.ReplaceExisting);
+            await SaveToFile(completedFile, JsonConvert.SerializeObject(CompletedItemsList?.Items ?? new ObservableCollection<ViewModels.ToDoItemViewModel>()));
         }
 
         private async Task SaveToFile(StorageFile file, string content)
@@ -159,6 +184,7 @@ namespace to_do_uwp
             var button = sender as Button;
             var item = button.DataContext as ToDoItemViewModel;
             ItemsList.DeleteItem(item);
+            CompletedItemsList.AddItem(item);
         }
     }
 }
