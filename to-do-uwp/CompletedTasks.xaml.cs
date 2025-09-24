@@ -64,6 +64,18 @@ namespace to_do_uwp
             }
         }
 
+        private async Task SaveToFile(StorageFile file, string content)
+        {
+            using (IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite))
+            {
+                using (DataWriter dataWriter = new DataWriter(stream))
+                {
+                    dataWriter.WriteString(content);
+                    await dataWriter.StoreAsync();
+                }
+            }
+        }
+
         private void HomeButton_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(MainPage));
@@ -83,23 +95,25 @@ namespace to_do_uwp
         {
             var button = sender as Button;
             var item = button.DataContext as ToDoItemViewModel;
-            CompletedItemsList.DeleteItem(item);
 
-            StorageFolder current = ApplicationData.Current.LocalFolder;
-
-            StorageFile completedFile = await current.CreateFileAsync("completed_items.json", CreationCollisionOption.ReplaceExisting);
-            await SaveToFile(completedFile, JsonConvert.SerializeObject(CompletedItemsList?.Items ?? new ObservableCollection<ViewModels.ToDoItemViewModel>()));
-        }
-
-        private async Task SaveToFile(StorageFile file, string content)
-        {
-            using (IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite))
+            ContentDialog deleteDialog = new ContentDialog
             {
-                using (DataWriter dataWriter = new DataWriter(stream))
-                {
-                    dataWriter.WriteString(content);
-                    await dataWriter.StoreAsync();
-                }
+                Title = "Delete Confirmation",
+                Content = $"Are you sure you want to delete the task \"{item.Name}\"?",
+                PrimaryButtonText = "Delete",
+                CloseButtonText = "Cancel"
+            };
+
+            ContentDialogResult result = await deleteDialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                CompletedItemsList.DeleteItem(item);
+
+                StorageFolder current = ApplicationData.Current.LocalFolder;
+
+                StorageFile completedFile = await current.CreateFileAsync("completed_items.json", CreationCollisionOption.ReplaceExisting);
+                await SaveToFile(completedFile, JsonConvert.SerializeObject(CompletedItemsList?.Items ?? new ObservableCollection<ViewModels.ToDoItemViewModel>()));
             }
         }
     }

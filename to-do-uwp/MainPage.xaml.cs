@@ -92,9 +92,6 @@ namespace to_do_uwp
 
             StorageFile toDoFile = await current.CreateFileAsync("items.json", CreationCollisionOption.ReplaceExisting);
             await SaveToFile(toDoFile, JsonConvert.SerializeObject(ItemsList.Items));
-
-            StorageFile completedFile = await current.CreateFileAsync("completed_items.json", CreationCollisionOption.ReplaceExisting);
-            await SaveToFile(completedFile, JsonConvert.SerializeObject(CompletedItemsList?.Items ?? new ObservableCollection<ViewModels.ToDoItemViewModel>()));
         }
 
         private async Task SaveToFile(StorageFile file, string content)
@@ -179,12 +176,16 @@ namespace to_do_uwp
             }
         }
 
-        private void CompleteButton_Click(Object sender, RoutedEventArgs e)
+        private async void CompleteButton_Click(Object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             var item = button.DataContext as ToDoItemViewModel;
             ItemsList.DeleteItem(item);
             CompletedItemsList.AddItem(item);
+
+            StorageFolder current = ApplicationData.Current.LocalFolder;
+            StorageFile completedFile = await current.CreateFileAsync("completed_items.json", CreationCollisionOption.ReplaceExisting);
+            await SaveToFile(completedFile, JsonConvert.SerializeObject(CompletedItemsList.Items));
         }
     }
 }
