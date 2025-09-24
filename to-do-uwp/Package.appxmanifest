@@ -15,7 +15,7 @@
 
   <Properties>
     <DisplayName>to_do_uwp</DisplayName>
-    <PublisherDisplayName>jacob</PublisherDisplayName>
+    <PublisherDisplayName>Jacob Kirchner</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
