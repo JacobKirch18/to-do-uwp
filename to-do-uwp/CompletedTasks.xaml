@@ -17,6 +17,7 @@
             <AppBarButton Icon="Help" Label="About" Click="AboutButton_Click" Width="85" />
         </CommandBar>
         <TextBlock Text="Completed Tasks" FontSize="40" FontWeight="Bold" Margin="20" HorizontalAlignment="Center"/>
+        <Button Content="Delete All" HorizontalAlignment="Center" Margin="20" Width="175" FontSize="18" Click="DeleteAllButton_Click"/>
         <ListView x:Name="ItemListView" Height="750" ItemsSource="{x:Bind CompletedItemsList.Items, Mode=OneWay}" Margin="20" HorizontalAlignment="Stretch">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">

@@ -99,7 +99,7 @@ namespace to_do_uwp
             ContentDialog deleteDialog = new ContentDialog
             {
                 Title = "Delete Confirmation",
-                Content = $"Are you sure you want to delete the task \"{item.Name}\"?",
+                Content = $"Are you sure you want to delete the task \"{item.Name}\"?\nThis action cannot be undone.",
                 PrimaryButtonText = "Delete",
                 CloseButtonText = "Cancel"
             };
@@ -109,6 +109,29 @@ namespace to_do_uwp
             if (result == ContentDialogResult.Primary)
             {
                 CompletedItemsList.DeleteItem(item);
+
+                StorageFolder current = ApplicationData.Current.LocalFolder;
+
+                StorageFile completedFile = await current.CreateFileAsync("completed_items.json", CreationCollisionOption.ReplaceExisting);
+                await SaveToFile(completedFile, JsonConvert.SerializeObject(CompletedItemsList?.Items ?? new ObservableCollection<ViewModels.ToDoItemViewModel>()));
+            }
+        }
+
+        private  async void DeleteAllButton_Click(object sender, RoutedEventArgs e)
+        {
+            ContentDialog deleteAllDialog = new ContentDialog
+            {
+                Title = "Delete All Confirmation",
+                Content = "Are you sure you want to delete all completed tasks?\nThis action cannot be undone.",
+                PrimaryButtonText = "Delete",
+                CloseButtonText = "Cancel"
+            };
+
+            ContentDialogResult result = await deleteAllDialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                CompletedItemsList.Items.Clear();
 
                 StorageFolder current = ApplicationData.Current.LocalFolder;
 
