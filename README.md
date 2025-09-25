@@ -2,8 +2,6 @@
 
 ## A basic To-Do Application made in Universal Windows Platform
 
-## Download on the Microsoft Store [here](https://apps.microsoft.com/detail/9pmspssc8vw1?hl=en-US&gl=US).
-
 ### Features the ability to set tasks with due dates, mark them as complete, and view completed tasks. Also featuring poorly drawn cat logos because I am not a graphic designer.
 
 Dev note:
